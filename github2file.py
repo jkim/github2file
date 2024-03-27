@@ -1,4 +1,3 @@
-import os
 import sys
 import requests
 import zipfile
@@ -70,8 +69,8 @@ def remove_comments_and_docstrings(source):
     for node in ast.walk(tree):
         if isinstance(node, (ast.FunctionDef, ast.ClassDef, ast.AsyncFunctionDef)) and ast.get_docstring(node):
             node.body = node.body[1:]  # Remove docstring
-        elif isinstance(node, ast.Expr) and isinstance(node.value, ast.Str):
-            node.value.s = ""  # Remove comments
+        elif isinstance(node, ast.Expr) and isinstance(node.value, ast.Constant):
+            node.value.value = ""  # Remove comments
     return ast.unparse(tree)
 
 def download_repo(repo_url, output_file, lang, keep_comments=False, branch_or_tag="master"):
